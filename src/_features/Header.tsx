@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import {
   AppBar,
   Box,
+  Divider,
   Drawer,
   IconButton,
   List,
@@ -18,6 +19,7 @@ import {
   Typography
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
+import LoginIcon from "@mui/icons-material/Login";
 import MenuIcon from "@mui/icons-material/Menu";
 
 export default function Header() {
@@ -25,19 +27,43 @@ export default function Header() {
   const router = useRouter();
 
   const NavigationList = () => {
-    const list = [{ name: "Home", icon: <HomeIcon />, url: "/" }];
+    const routeList = [
+      { name: "Home", icon: <HomeIcon />, onClick: () => router.push("/") }
+    ];
+    const userList = [
+      {
+        name: "Login",
+        icon: <LoginIcon />,
+        onClick: () => {
+          router.push("/login");
+        }
+      }
+    ];
 
     return (
       <Box sx={{ minWidth: 250 }}>
         <List>
-          {list.map((item, index) => (
-            <ListItem key={index} onClick={() => router.push(item.url)}>
+          {routeList.map((item, index) => (
+            <ListItem key={index} onClick={item.onClick}>
               <ListItemButton>
                 <ListItemIcon>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.name} />
               </ListItemButton>
             </ListItem>
           ))}
+          {userList.length > 0 && (
+            <>
+              <Divider />
+              {userList.map((item, index) => (
+                <ListItem key={index} onClick={item.onClick}>
+                  <ListItemButton>
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText primary={item.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </>
+          )}
         </List>
       </Box>
     );
