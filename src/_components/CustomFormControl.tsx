@@ -1,5 +1,6 @@
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
+import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 
 interface CustomFormControlProps {
@@ -23,10 +24,12 @@ export default function CustomFormControl(props: CustomFormControlProps) {
     placeholder,
     handleOnChange
   } = props;
+
   return (
     <FormControl>
       <FormLabel htmlFor={type}>{label}</FormLabel>
       <TextField
+        key={label}
         autoComplete={type}
         name={type}
         required
