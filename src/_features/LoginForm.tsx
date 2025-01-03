@@ -52,19 +52,19 @@ export default function LoginForm() {
 
   return (
     <Stack direction="column" justifyContent="space-between">
-      <Typography
-        component="h1"
-        variant="h4"
-        sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
-      >
-        Sign In
-      </Typography>
       <FormControl>
         <Box
           component="form"
           onSubmit={handleSubmit}
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
+          <Typography
+            component="h1"
+            variant="h4"
+            sx={{ width: "100%", fontSize: "clamp(2rem, 10vw, 2.15rem)" }}
+          >
+            Sign In
+          </Typography>
           <Stack>
             <FormLabel htmlFor="username">Username</FormLabel>
             <TextField
