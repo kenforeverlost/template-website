@@ -27,8 +27,11 @@ export const validateLogin = async ({ email, password }: AuthUserProps) => {
     message = "Login successful";
     result = true;
     userData = data.user;
-  } catch (error: Exception) {
-    message = error?.message || "An error occurred during login";
+  } catch (error: unknown) {
+    message =
+      error instanceof Error && error?.message
+        ? error?.message
+        : "An error occurred during login";
   }
 
   return { result: result, message: message, userData: userData };
