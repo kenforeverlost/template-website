@@ -4,8 +4,11 @@ import { AuthUserProps } from "@type/auth";
 export const createUser = async ({ email, password }: AuthUserProps) => {
   const { data, error } = await supabase.auth.signUp({
     email: email,
-    password: password
+    password: password,
   });
+
+  console.log(data);
+  console.log(error);
 };
 
 export const validateLogin = async ({ email, password }: AuthUserProps) => {
@@ -16,7 +19,7 @@ export const validateLogin = async ({ email, password }: AuthUserProps) => {
   try {
     const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
-      password: password
+      password: password,
     });
 
     if (error) throw error;
@@ -24,7 +27,7 @@ export const validateLogin = async ({ email, password }: AuthUserProps) => {
     message = "Login successful";
     result = true;
     userData = data.user;
-  } catch (error: any) {
+  } catch (error: Exception) {
     message = error?.message || "An error occurred during login";
   }
 
