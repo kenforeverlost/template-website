@@ -91,9 +91,11 @@ export default function Header() {
           >
             <MenuIcon onClick={() => setIsMenuOpen(!isMenuOpen)} />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            kdlp.dev
-          </Typography>
+          <Stack onClick={() => router.push("/")} sx={{ cursor: "pointer" }}>
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              kdlp.dev
+            </Typography>
+          </Stack>
         </Toolbar>
         <Drawer open={isMenuOpen} onClose={() => setIsMenuOpen(false)}>
           <NavigationList />

@@ -34,9 +34,6 @@ export default function LoginForm() {
       setUsernameError("");
     }
 
-    console.log(username);
-    console.log(isValid);
-
     if (!isValid) {
       //TODO
       return;
@@ -44,10 +41,8 @@ export default function LoginForm() {
 
     const data = {
       username: username,
-      password: password
+      password: password,
     };
-
-    console.log(data);
   };
 
   return (

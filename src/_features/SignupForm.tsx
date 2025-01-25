@@ -1,72 +1,106 @@
 "use client";
 
 import { useState } from "react";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import FormLabel from "@mui/material/FormLabel";
-import FormControl from "@mui/material/FormControl";
-import Stack from "@mui/material/Stack";
-import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+import {
+  Alert,
+  AlertColor,
+  Box,
+  Button,
+  FormControl,
+  FormLabel,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material/";
+
+import { createUser } from "@lib/authActions";
+import { validateEmail, validatePassword } from "@lib/authHelpers";
 
 export default function SignupForm() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [usernameError, setUsernameError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
+  const [processingSignup, setProcessingSignup] = useState<boolean>(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [alertMessage, setAlertMessage] = useState<{
+    color: AlertColor;
+    message: string;
+  }>();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLDivElement>) => {
     event.preventDefault();
+
+    setEmailError("");
+    setPasswordError("");
+    setConfirmPasswordError("");
+    setAlertMessage(undefined);
+    setProcessingSignup(true);
 
     let isValid = true;
 
-    if (!password || password.length < 8) {
-      setPasswordError("Password must be at least 8 characters long.");
-      isValid = false;
-    } else {
-      setPasswordError("");
+    try {
+      if (!email || email.length === 0) {
+        setEmailError("Email is required");
+        isValid = false;
+      } else {
+        const { result: validEmail, message: validEmailMessage } =
+          validateEmail(email);
+        if (!validEmail) {
+          setEmailError(validEmailMessage);
+          isValid = false;
+        }
+      }
+
+      if (!password || password.length === 0) {
+        setPasswordError("Password is required");
+        isValid = false;
+      } else {
+        const { result: validPassword, message: validPasswordMessage } =
+          validatePassword(password, "signup");
+        if (!validPassword) {
+          setPasswordError(validPasswordMessage);
+          isValid = false;
+        }
+      }
+
+      if (!confirmPassword || confirmPassword !== password) {
+        setConfirmPasswordError("Does not match password");
+        isValid = false;
+      }
+
+      if (isValid) {
+        const { result: userCreated, message: userCreatedMessage } =
+          await createUser({ email: email, password: password });
+        setAlertMessage({
+          color: userCreated ? "success" : "error",
+          message: userCreatedMessage,
+        });
+
+        if (userCreated) {
+          setEmail("");
+          setPassword("");
+          setConfirmPassword("");
+        }
+      }
+
+      setProcessingSignup(false);
+    } catch (error: unknown) {
+      const errorMessage =
+        error instanceof Error && error?.message !== ""
+          ? error.message
+          : "An error occurred during sign up";
+      setAlertMessage({ color: "error", message: errorMessage });
     }
-    //TODO: Add number, case, and special character requirement
-
-    if (confirmPassword || confirmPassword !== password) {
-      setConfirmPasswordError("Passwords does not match.");
-      isValid = false;
-    } else {
-      setPasswordError("");
-    }
-
-    if (!username || username.length < 1) {
-      setUsernameError("Username is required.");
-      isValid = false;
-    } else {
-      setUsernameError("");
-    }
-    //TODO: Check uniqueness and length
-
-    console.log(isValid);
-
-    if (!isValid) {
-      //TODO
-      return;
-    }
-
-    const data = {
-      username: username,
-      password: password,
-      confirmPassword: confirmPassword,
-    };
-
-    console.log(data);
   };
 
   return (
     <Stack direction="column" justifyContent="space-between">
-      <FormControl>
+      <FormControl onSubmit={handleSubmit}>
         <Box
           component="form"
-          onSubmit={handleSubmit}
           sx={{ display: "flex", flexDirection: "column", gap: 2 }}
         >
           <Typography
@@ -77,23 +111,23 @@ export default function SignupForm() {
             Sign Up
           </Typography>
           <Stack>
-            <FormLabel htmlFor="username">Username</FormLabel>
+            <FormLabel htmlFor="email">Email</FormLabel>
             <TextField
-              key="username"
-              autoComplete="username"
-              name="username"
+              key="email"
+              autoComplete="email"
+              name="email"
               fullWidth
               autoFocus
-              id="username"
-              placeholder="Username or Email"
-              error={!!usernameError}
-              helperText={usernameError}
-              color={!!usernameError ? "error" : "primary"}
-              value={username}
+              id="email"
+              placeholder="Email"
+              error={!!emailError}
+              helperText={emailError}
+              color={!!emailError ? "error" : "primary"}
+              value={email}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 const eventTarget = e.target as HTMLInputElement;
 
-                setUsername(eventTarget.value);
+                setEmail(eventTarget.value);
               }}
             />
           </Stack>
@@ -138,9 +172,17 @@ export default function SignupForm() {
               }}
             />
           </Stack>
-          <Button type="submit" fullWidth variant="contained">
+          <Button
+            disabled={processingSignup}
+            fullWidth
+            variant="contained"
+            type="submit"
+          >
             Create Account
           </Button>
+          {alertMessage && (
+            <Alert color={alertMessage.color}>{alertMessage.message}</Alert>
+          )}
         </Box>
       </FormControl>
     </Stack>
