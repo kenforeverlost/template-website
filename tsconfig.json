@@ -18,10 +18,13 @@
         "name": "next"
       }
     ],
+    "types": ["node", "react", "react-dom"],
     "paths": {
       "@/*": ["./src/*"],
       "@components/*": ["./src/_components/*"],
-      "@features/*": ["./src/_features/*"]
+      "@features/*": ["./src/_features/*"],
+      "@lib/*": ["./src/_lib/*"],
+      "@type/*": ["./src/_types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
