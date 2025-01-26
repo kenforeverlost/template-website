@@ -1,13 +1,13 @@
 "use client";
 
 import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material/styles";
+import { styled } from "@mui/material";
 
 interface CustomFormControlProps {
   children?: React.ReactNode;
 }
 
-export default function CustomMuiCard(props: CustomFormControlProps) {
+const CustomMuiCard = (props: CustomFormControlProps) => {
   const { children } = props;
 
   const Card = styled(MuiCard)(({ theme }) => ({
@@ -21,13 +21,15 @@ export default function CustomMuiCard(props: CustomFormControlProps) {
     boxShadow:
       "hsla(220, 30%, 5%, 0.05) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.05) 0px 15px 35px -5px",
     [theme.breakpoints.up("sm")]: {
-      width: "450px"
+      width: "450px",
     },
     ...theme.applyStyles("dark", {
       boxShadow:
-        "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px"
-    })
+        "hsla(220, 30%, 5%, 0.5) 0px 5px 15px 0px, hsla(220, 25%, 10%, 0.08) 0px 15px 35px -5px",
+    }),
   }));
 
   return <Card>{children}</Card>;
-}
+};
+
+export default CustomMuiCard;

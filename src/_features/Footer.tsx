@@ -6,7 +6,7 @@ export default function Footer() {
       sx={{ marginTop: "auto", padding: 3, textAlign: "right", width: "100%" }}
     >
       <Typography variant="subtitle2">
-        Copyright © 2024 - Kendrick De La Pena
+        Copyright © 2025 - Kendrick De La Pena
       </Typography>
     </Box>
   );

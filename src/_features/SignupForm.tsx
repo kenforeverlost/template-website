@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import {
-  Alert,
   AlertColor,
   Box,
   Button,
@@ -13,6 +12,7 @@ import {
   Typography,
 } from "@mui/material/";
 
+import CustomAlert from "@components/CustomAlert";
 import { createUser } from "@lib/authActions";
 import { validateEmail, validatePassword } from "@lib/authHelpers";
 
@@ -23,8 +23,7 @@ export default function SignupForm() {
   const [emailError, setEmailError] = useState<string>("");
   const [passwordError, setPasswordError] = useState<string>("");
   const [confirmPasswordError, setConfirmPasswordError] = useState<string>("");
-  const [processingSignup, setProcessingSignup] = useState<boolean>(false);
-
+  const [processing, setProcessing] = useState<boolean>(false);
   const [alertMessage, setAlertMessage] = useState<{
     color: AlertColor;
     message: string;
@@ -37,7 +36,7 @@ export default function SignupForm() {
     setPasswordError("");
     setConfirmPasswordError("");
     setAlertMessage(undefined);
-    setProcessingSignup(true);
+    setProcessing(true);
 
     let isValid = true;
 
@@ -86,7 +85,7 @@ export default function SignupForm() {
         }
       }
 
-      setProcessingSignup(false);
+      setProcessing(false);
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error && error?.message !== ""
@@ -173,7 +172,7 @@ export default function SignupForm() {
             />
           </Stack>
           <Button
-            disabled={processingSignup}
+            disabled={processing}
             fullWidth
             variant="contained"
             type="submit"
@@ -181,7 +180,9 @@ export default function SignupForm() {
             Create Account
           </Button>
           {alertMessage && (
-            <Alert color={alertMessage.color}>{alertMessage.message}</Alert>
+            <CustomAlert color={alertMessage.color}>
+              {alertMessage.message}
+            </CustomAlert>
           )}
         </Box>
       </FormControl>

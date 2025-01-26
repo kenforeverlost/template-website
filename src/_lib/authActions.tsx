@@ -1,7 +1,9 @@
 "use server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-import { supabase } from "@lib/supabase";
-import { AuthUserProps } from "@type/auth";
+import { supabase } from "@lib/supabase/client";
+import { AuthUserProps, ProfileProps } from "@type/auth";
 
 export const createUser = async ({ email, password }: AuthUserProps) => {
   const response: {
@@ -56,6 +58,51 @@ export const createUser = async ({ email, password }: AuthUserProps) => {
       error instanceof Error && error?.message !== ""
         ? error.message
         : "Signing up is unavailable at this time. Check back later!";
+  }
+
+  return response;
+};
+
+export const loginUser = async ({ email, password }: AuthUserProps) => {
+  const response: {
+    result: boolean;
+    message: string;
+    data: ProfileProps | undefined;
+  } = {
+    result: false,
+    message: "",
+    data: undefined,
+  };
+
+  try {
+    const { data: loginData, error: loginDataError } =
+      await supabase.auth.signInWithPassword({
+        email: email,
+        password: password,
+      });
+
+    if (loginDataError) {
+      throw loginDataError;
+    }
+
+    const { data: profile, error: profileError } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("id", loginData.user.id);
+
+    if (profileError) {
+      throw profileError;
+    }
+
+    response["result"] = true;
+    response["message"] = "Login successful!";
+    response["data"] = profile ? profile[0] : undefined;
+    //TODO: Redirector to account page
+  } catch (error: unknown) {
+    response["message"] =
+      error instanceof Error && error?.message !== ""
+        ? error.message
+        : "Logging in is unavailable at this time. Check back later!";
   }
 
   return response;
