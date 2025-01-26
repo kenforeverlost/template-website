@@ -1,13 +1,9 @@
 "use client";
 
 import MuiCard from "@mui/material/Card";
-import { styled } from "@mui/material";
+import { CardProps, styled } from "@mui/material";
 
-interface CustomFormControlProps {
-  children?: React.ReactNode;
-}
-
-const CustomMuiCard = (props: CustomFormControlProps) => {
+const CustomMuiCard = (props: CardProps) => {
   const { children } = props;
 
   const Card = styled(MuiCard)(({ theme }) => ({
@@ -29,7 +25,7 @@ const CustomMuiCard = (props: CustomFormControlProps) => {
     }),
   }));
 
-  return <Card>{children}</Card>;
+  return <Card {...props}>{children}</Card>;
 };
 
 export default CustomMuiCard;

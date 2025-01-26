@@ -13,7 +13,7 @@ import {
 } from "@mui/material/";
 
 import CustomAlert from "@components/CustomAlert";
-import { createUser } from "@lib/authActions";
+import { createUser, loginUserRedirect } from "@lib/authActions";
 import { validateEmail, validatePassword } from "@lib/authHelpers";
 
 export default function SignupForm() {
@@ -82,6 +82,7 @@ export default function SignupForm() {
           setEmail("");
           setPassword("");
           setConfirmPassword("");
+          await loginUserRedirect();
         }
       }
 
@@ -92,6 +93,7 @@ export default function SignupForm() {
           ? error.message
           : "An error occurred during sign up";
       setAlertMessage({ color: "error", message: errorMessage });
+      setProcessing(false);
     }
   };
 

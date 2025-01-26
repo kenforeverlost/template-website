@@ -19,9 +19,8 @@ import {
   Typography,
 } from "@mui/material";
 import HomeIcon from "@mui/icons-material/Home";
-import LoginIcon from "@mui/icons-material/Login";
 import MenuIcon from "@mui/icons-material/Menu";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
+import PersonIcon from "@mui/icons-material/Person";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,21 +32,13 @@ export default function Header() {
     ];
     const userList = [
       {
-        name: "Login",
-        icon: <LoginIcon />,
+        name: " Account",
+        icon: <PersonIcon />,
         onClick: () => {
-          router.push("/login");
-        },
-      },
-      {
-        name: "Create Account",
-        icon: <PersonAddIcon />,
-        onClick: () => {
-          router.push("/signup");
+          router.push("/account");
         },
       },
     ];
-    //TODO: Need to chaange items based on login or not
 
     return (
       <Box sx={{ minWidth: 250 }}>

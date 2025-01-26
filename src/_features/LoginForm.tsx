@@ -13,7 +13,7 @@ import {
 } from "@mui/material/";
 
 import CustomAlert from "@components/CustomAlert";
-import { loginUser } from "@lib/authActions";
+import { loginUser, loginUserRedirect } from "@lib/authActions";
 import { validateEmail, validatePassword } from "@lib/authHelpers";
 
 export default function LoginForm() {
@@ -72,6 +72,7 @@ export default function LoginForm() {
         if (userLogin) {
           setEmail("");
           setPassword("");
+          await loginUserRedirect();
         }
       }
 
@@ -80,8 +81,9 @@ export default function LoginForm() {
       const errorMessage =
         error instanceof Error && error?.message !== ""
           ? error.message
-          : "An error occurred during sign up";
+          : "An error occurred during login";
       setAlertMessage({ color: "error", message: errorMessage });
+      setProcessing(false);
     }
   };
 
