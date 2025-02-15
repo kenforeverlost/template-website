@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
-import * as React from "react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import * as React from 'react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
   AppBar,
   Box,
@@ -17,28 +17,28 @@ import {
   Stack,
   Toolbar,
   Typography,
-} from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import MenuIcon from "@mui/icons-material/Menu";
-import PersonIcon from "@mui/icons-material/Person";
+} from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home'
+import MenuIcon from '@mui/icons-material/Menu'
+import PersonIcon from '@mui/icons-material/Person'
 
 export default function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const router = useRouter();
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const router = useRouter()
 
   const NavigationList = () => {
     const routeList = [
-      { name: "Home", icon: <HomeIcon />, onClick: () => router.push("/") },
-    ];
+      { name: 'Home', icon: <HomeIcon />, onClick: () => router.push('/') },
+    ]
     const userList = [
       {
-        name: " Account",
+        name: ' Account',
         icon: <PersonIcon />,
         onClick: () => {
-          router.push("/account");
+          router.push('/account')
         },
       },
-    ];
+    ]
 
     return (
       <Box sx={{ minWidth: 250 }}>
@@ -66,8 +66,8 @@ export default function Header() {
           )}
         </List>
       </Box>
-    );
-  };
+    )
+  }
 
   return (
     <Stack>
@@ -82,7 +82,7 @@ export default function Header() {
           >
             <MenuIcon onClick={() => setIsMenuOpen(!isMenuOpen)} />
           </IconButton>
-          <Stack onClick={() => router.push("/")} sx={{ cursor: "pointer" }}>
+          <Stack onClick={() => router.push('/')} sx={{ cursor: 'pointer' }}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               kdlp.dev
             </Typography>
@@ -93,5 +93,5 @@ export default function Header() {
         </Drawer>
       </AppBar>
     </Stack>
-  );
+  )
 }
