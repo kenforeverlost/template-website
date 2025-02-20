@@ -84,7 +84,7 @@ export default function Header() {
           </IconButton>
           <Stack onClick={() => router.push('/')} sx={{ cursor: 'pointer' }}>
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-              kdlp.dev
+              Template Website
             </Typography>
           </Stack>
         </Toolbar>
